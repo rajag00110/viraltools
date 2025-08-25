@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Resizer - Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            margin-right: 15px;
+        }
+
+        .logo h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .tool-container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .tool-header {
+            background-color: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tool-content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .tool-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .upload-section {
+            border-right: 2px dashed #e0e0e0;
+            padding-right: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .upload-section {
+                border-right: none;
+                border-bottom: 2px dashed #e0e0e0;
+                padding-right: 0;
+                padding-bottom: 30px;
+            }
+        }
+
+        .upload-area {
+            border: 3px dashed #007bff;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #f8fbff;
+            margin-bottom: 25px;
+        }
+
+        .upload-area:hover {
+            background-color: #e6f2ff;
+            border-color: #0056b3;
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 15px;
+        }
+
+        .upload-area h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: #666;
+        }
+
+        #file-input {
+            display: none;
+        }
+
+        .resize-options {
+            margin-bottom: 25px;
+        }
+
+        .option-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .option-group label {
+            font-weight: 600;
+            color: #0066cc;
+            min-width: 80px;
+        }
+
+        .option-group input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            flex: 1;
+            transition: border-color 0.3s;
+        }
+
+        .option-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #f1f8ff;
+            color: #007bff;
+            border: 2px solid #007bff;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e6f2ff;
+        }
+
+        .preview-section h3 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 300px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9f9f9;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .image-info {
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .image-info p {
+            margin-bottom: 8px;
+            color: #0066cc;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .image-info span {
+            font-weight: 600;
+            color: #0056b3;
+        }
+
+        .download-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 16px;
+        }
+
+        .download-btn:hover {
+            background-color: #218838;
+        }
+
+        .placeholder-text {
+            color: #999;
+            text-align: center;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background-color: #28a745;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <h1>Viral Tools</h1>
+            </div>
+            <p>Resize your images easily with our free online tool</p>
+        </header>
+
+        <div class="tool-container">
+            <div class="tool-header">
+                <i class="fas fa-expand-arrows-alt"></i> Image Resizer
+            </div>
+            <div class="tool-content">
+                <div class="upload-section">
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Upload Your Image</h3>
+                        <p>Click or drag & drop to upload</p>
+                        <input type="file" id="file-input" accept="image/*">
+                    </div>
+
+                    <div class="resize-options">
+                        <div class="option-group">
+                            <label for="width">Width:</label>
+                            <input type="number" id="width" placeholder="Enter width in pixels">
+                        </div>
+                        <div class="option-group">
+                            <label for="height">Height:</label>
+                            <input type="number" id="height" placeholder="Enter height in pixels">
+                        </div>
+                        <div class="option-group">
+                            <label for="ratio">
+                                <input type="checkbox" id="ratio" checked>
+                                Maintain ratio
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-primary" id="resize-btn">
+                            <i class="fas fa-expand-arrows-alt"></i> Resize Image
+                        </button>
+                        <button class="btn-secondary" id="reset-btn">
+                            <i class="fas fa-redo"></i> Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div class="preview-section">
+                    <h3>Preview</h3>
+                    <div class="image-preview" id="image-preview">
+                        <p class="placeholder-text">Your resized image will appear here</p>
+                    </div>
+
+                    <div class="image-info" id="image-info">
+                        <p>Original size: <span id="original-size">-</span></p>
+                        <p>New size: <span id="new-size">-</span></p>
+                        <p>Width: <span id="img-width">-</span> px</p>
+                        <p>Height: <span id="img-height">-</span> px</p>
+                    </div>
+
+                    <button class="download-btn" id="download-btn" disabled>
+                        <i class="fas fa-download"></i> Download Resized Image
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Viral Tools. All rights reserved.</p>
+          
+        </footer>
+    </div>
+
+    <div class="notification" id="notification">Image resized successfully!</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const fileInput = document.getElementById('file-input');
+            const uploadArea = document.getElementById('upload-area');
+            const widthInput = document.getElementById('width');
+            const heightInput = document.getElementById('height');
+            const ratioCheckbox = document.getElementById('ratio');
+            const resizeBtn = document.getElementById('resize-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const imagePreview = document.getElementById('image-preview');
+            const originalSizeSpan = document.getElementById('original-size');
+            const newSizeSpan = document.getElementById('new-size');
+            const imgWidthSpan = document.getElementById('img-width');
+            const imgHeightSpan = document.getElementById('img-height');
+            const notification = document.getElementById('notification');
+            
+            // Variables to store image data
+            let originalImage = null;
+            let resizedImageBlob = null;
+            let originalWidth = 0;
+            let originalHeight = 0;
+            
+            // Upload area click handler
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // Drag and drop functionality
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '#e6f2ff';
+                uploadArea.style.borderColor = '#0056b3';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.backgroundColor = '#f8fbff';
+                uploadArea.style.borderColor = '#007bff';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.backgroundColor = '#f8fbff';
+                uploadArea.style.borderColor = '#007bff';
+                
+                if (e.dataTransfer.files.length) {
+                    handleImageUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            // File input change handler
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    handleImageUpload(fileInput.files[0]);
+                }
+            });
+            
+            // Maintain aspect ratio functionality
+            widthInput.addEventListener('input', () => {
+                if (ratioCheckbox.checked && originalImage && widthInput.value) {
+                    const ratio = originalHeight / originalWidth;
+                    heightInput.value = Math.round(widthInput.value * ratio);
+                }
+            });
+            
+            heightInput.addEventListener('input', () => {
+                if (ratioCheckbox.checked && originalImage && heightInput.value) {
+                    const ratio = originalWidth / originalHeight;
+                    widthInput.value = Math.round(heightInput.value * ratio);
+                }
+            });
+            
+            // Resize button handler
+            resizeBtn.addEventListener('click', resizeImage);
+            
+            // Reset button handler
+            resetBtn.addEventListener('click', resetTool);
+            
+            // Download button handler
+            downloadBtn.addEventListener('click', downloadImage);
+            
+            // Handle image upload
+            function handleImageUpload(file) {
+                if (!file.type.match('image.*')) {
+                    showNotification('Please upload an image file', false);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const img = new Image();
+                    
+                    img.onload = function() {
+                        // Store original dimensions
+                        originalWidth = img.width;
+                        originalHeight = img.height;
+                        
+                        // Set input values
+                        widthInput.value = originalWidth;
+                        heightInput.value = originalHeight;
+                        
+                        // Display original image
+                        originalImage = img;
+                        displayImage(img, imagePreview);
+                        
+                        // Update info panel
+                        originalSizeSpan.textContent = formatFileSize(file.size);
+                        newSizeSpan.textContent = '-';
+                        imgWidthSpan.textContent = originalWidth;
+                        imgHeightSpan.textContent = originalHeight;
+                        
+                        // Enable download button
+                        downloadBtn.disabled = false;
+                    };
+                    
+                    img.src = e.target.result;
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            // Resize image function
+            function resizeImage() {
+                if (!originalImage) {
+                    showNotification('Please upload an image first', false);
+                    return;
+                }
+                
+                const newWidth = parseInt(widthInput.value);
+                const newHeight = parseInt(heightInput.value);
+                
+                if (!newWidth || !newHeight || newWidth <= 0 || newHeight <= 0) {
+                    showNotification('Please enter valid dimensions', false);
+                    return;
+                }
+                
+                // Create off-screen image for resizing
+                const canvas = document.createElement('canvas');
+                canvas.width = newWidth;
+                canvas.height = newHeight;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalImage, 0, 0, newWidth, newHeight);
+                
+                // Convert to blob and display
+                canvas.toBlob(function(blob) {
+                    resizedImageBlob = blob;
+                    
+                    // Create image from blob for preview
+                    const url = URL.createObjectURL(blob);
+                    const img = new Image();
+                    img.onload = function() {
+                        displayImage(img, imagePreview);
+                        URL.revokeObjectURL(url);
+                        
+                        // Update info panel
+                        newSizeSpan.textContent = formatFileSize(blob.size);
+                        imgWidthSpan.textContent = newWidth;
+                        imgHeightSpan.textContent = newHeight;
+                        
+                        showNotification('Image resized successfully!');
+                    };
+                    img.src = url;
+                });
+            }
+            
+            // Display image in preview area
+            function displayImage(img, container) {
+                container.innerHTML = '';
+                container.appendChild(img);
+            }
+            
+            // Reset tool function
+            function resetTool() {
+                fileInput.value = '';
+                widthInput.value = '';
+                heightInput.value = '';
+                ratioCheckbox.checked = true;
+                imagePreview.innerHTML = '<p class="placeholder-text">Your resized image will appear here</p>';
+                originalSizeSpan.textContent = '-';
+                newSizeSpan.textContent = '-';
+                imgWidthSpan.textContent = '-';
+                imgHeightSpan.textContent = '-';
+                originalImage = null;
+                resizedImageBlob = null;
+                downloadBtn.disabled = true;
+            }
+            
+            // Download image function
+            function downloadImage() {
+                if (!resizedImageBlob) {
+                    showNotification('Please resize an image first', false);
+                    return;
+                }
+                
+                const url = URL.createObjectURL(resizedImageBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'resized-image.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // Format file size to readable format
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(2) + ' KB';
+                else return (bytes / 1048576).toFixed(2) + ' MB';
+            }
+            
+            // Show notification
+            function showNotification(message, isSuccess = true) {
+                notification.textContent = message;
+                notification.style.backgroundColor = isSuccess ? '#28a745' : '#dc3545';
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
