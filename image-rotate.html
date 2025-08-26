@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Rotator & Flipper | Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .site-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            width: 100%;
+        }
+
+        /* Upload Card */
+        .upload-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background-color: rgba(67, 97, 238, 0.03);
+        }
+
+        .upload-area i {
+            font-size: 50px;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .upload-text h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .upload-text p {
+            color: var(--gray);
+            margin-bottom: 15px;
+        }
+
+        .browse-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-block;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+        }
+
+        .browse-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Preview Card */
+        .preview-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            display: none;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .preview-title {
+            font-size: 22px;
+            color: var(--primary);
+        }
+
+        .preview-area {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            position: relative;
+            min-height: 300px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .preview-area::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-conic-gradient(var(--light-gray) 0% 25%, #fff 0% 50%) 50% / 20px 20px;
+            opacity: 0.5;
+            z-index: 0;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+            object-fit: contain;
+            margin: auto;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .preview-placeholder i {
+            font-size: 50px;
+            margin-bottom: 15px;
+            color: #adb5bd;
+        }
+
+        .preview-placeholder p {
+            font-size: 18px;
+        }
+
+        /* Transformation info */
+        .transform-info {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--gray);
+            padding: 8px 12px;
+            background: var(--light-gray);
+            border-radius: 20px;
+            display: inline-block;
+            margin: 15px auto;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .tool-btn {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .tool-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            border-color: var(--primary);
+        }
+
+        .tool-btn i {
+            font-size: 18px;
+        }
+
+        .tool-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .tool-btn {
+                width: 200px;
+                justify-content: center;
+            }
+            
+            .upload-area {
+                padding: 30px 15px;
+            }
+            
+            .upload-text h3 {
+                font-size: 20px;
+            }
+            
+            .preview-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 24px;
+            }
+            
+            .tagline {
+                font-size: 14px;
+            }
+            
+            .upload-card, .preview-card {
+                padding: 20px;
+            }
+            
+            .browse-btn {
+                padding: 10px 20px;
+            }
+            
+            .preview-area {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h1 class="site-title">Viral Tools</h1>
+            </div>
+            <p class="tagline">Smart Online Tools for Everyone</p>
+        </header>
+
+        <main class="main-content">
+            <div class="upload-card">
+                <div class="upload-area" id="drop-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <div class="upload-text">
+                        <h3>Drag & Drop Your Image Here</h3>
+                        <p>or</p>
+                    </div>
+                    <input type="file" id="file-input" accept="image/*" hidden>
+                    <button class="browse-btn" id="browse-btn">Browse Files</button>
+                </div>
+            </div>
+
+            <div class="preview-card" id="preview-card">
+                <div class="preview-header">
+                    <h2 class="preview-title">Image Preview</h2>
+                </div>
+                <div class="preview-area">
+                    <div class="preview-placeholder" id="preview-placeholder">
+                        <i class="fas fa-image"></i>
+                        <p>Upload an image to preview</p>
+                    </div>
+                    <img id="image-preview" src="" alt="Your image preview">
+                </div>
+                
+                <div class="transform-info" id="transform-info">
+                    No transformations applied
+                </div>
+                
+                <div class="toolbar">
+                    <button class="tool-btn" id="rotate-left">
+                        <i class="fas fa-undo"></i> Rotate Left
+                    </button>
+                    <button class="tool-btn" id="rotate-right">
+                        <i class="fas fa-redo"></i> Rotate Right
+                    </button>
+                    <button class="tool-btn" id="flip-h">
+                        <i class="fas fa-arrows-alt-h"></i> Flip Horizontal
+                    </button>
+                    <button class="tool-btn" id="flip-v">
+                        <i class="fas fa-arrows-alt-v"></i> Flip Vertical
+                    </button>
+                    <button class="tool-btn" id="reset">
+                        <i class="fas fa-sync-alt"></i> Reset
+                    </button>
+                    <button class="tool-btn" id="download">
+                        <i class="fas fa-download"></i> Download
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2023 Viral Tools - Image Rotator and Flipper Tool. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const dropArea = document.getElementById('drop-area');
+            const fileInput = document.getElementById('file-input');
+            const browseBtn = document.getElementById('browse-btn');
+            const previewCard = document.getElementById('preview-card');
+            const previewPlaceholder = document.getElementById('preview-placeholder');
+            const imagePreview = document.getElementById('image-preview');
+            const transformInfo = document.getElementById('transform-info');
+            
+            // Tool buttons
+            const rotateLeftBtn = document.getElementById('rotate-left');
+            const rotateRightBtn = document.getElementById('rotate-right');
+            const flipHBtn = document.getElementById('flip-h');
+            const flipVBtn = document.getElementById('flip-v');
+            const resetBtn = document.getElementById('reset');
+            const downloadBtn = document.getElementById('download');
+            
+            // Image transformation state
+            let rotation = 0;
+            let scaleX = 1;
+            let scaleY = 1;
+            let originalImage = null;
+            
+            // File upload handling
+            browseBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop functionality
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.style.borderColor = 'var(--primary)';
+                dropArea.style.backgroundColor = 'rgba(67, 97, 238, 0.05)';
+            }
+            
+            function unhighlight() {
+                dropArea.style.borderColor = '#ddd';
+                dropArea.style.backgroundColor = 'transparent';
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+            
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+            
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.match('image.*')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            imagePreview.src = e.target.result;
+                            originalImage = e.target.result;
+                            previewCard.style.display = 'block';
+                            previewPlaceholder.style.display = 'none';
+                            // Scroll to preview
+                            previewCard.scrollIntoView({ behavior: 'smooth' });
+                            // Reset transformations
+                            resetTransformations();
+                        }
+                        
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Please upload an image file.');
+                    }
+                }
+            }
+            
+            // Update transformation info text
+            function updateTransformInfo() {
+                let info = [];
+                
+                if (rotation !== 0) {
+                    info.push(`Rotated: ${rotation}°`);
+                }
+                
+                if (scaleX === -1) {
+                    info.push('Flipped horizontally');
+                }
+                
+                if (scaleY === -1) {
+                    info.push('Flipped vertically');
+                }
+                
+                if (info.length === 0) {
+                    transformInfo.textContent = 'No transformations applied';
+                } else {
+                    transformInfo.textContent = info.join(' | ');
+                }
+            }
+            
+            // Image transformation functions
+            function applyTransformations() {
+                imagePreview.style.transform = `rotate(${rotation}deg) scaleX(${scaleX}) scaleY(${scaleY})`;
+                updateTransformInfo();
+            }
+            
+            function resetTransformations() {
+                rotation = 0;
+                scaleX = 1;
+                scaleY = 1;
+                applyTransformations();
+            }
+            
+            // Button event listeners
+            rotateLeftBtn.addEventListener('click', () => {
+                rotation -= 90;
+                applyTransformations();
+            });
+            
+            rotateRightBtn.addEventListener('click', () => {
+                rotation += 90;
+                applyTransformations();
+            });
+            
+            flipHBtn.addEventListener('click', () => {
+                scaleX *= -1;
+                applyTransformations();
+            });
+            
+            flipVBtn.addEventListener('click', () => {
+                scaleY *= -1;
+                applyTransformations();
+            });
+            
+            resetBtn.addEventListener('click', () => {
+                resetTransformations();
+            });
+            
+            downloadBtn.addEventListener('click', () => {
+                if (!imagePreview.src) {
+                    alert('Please upload an image first.');
+                    return;
+                }
+                
+                // Create a canvas to draw the transformed image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas dimensions to accommodate the rotated image
+                let width = imagePreview.naturalWidth;
+                let height = imagePreview.naturalHeight;
+                
+                if (rotation % 180 !== 0) {
+                    [width, height] = [height, width];
+                }
+                
+                canvas.width = width * Math.abs(scaleX);
+                canvas.height = height * Math.abs(scaleY);
+                
+                // Translate and rotate context
+                ctx.translate(canvas.width / 2, canvas.height / 2);
+                ctx.rotate(rotation * Math.PI / 180);
+                ctx.scale(scaleX, scaleY);
+                
+                // Draw the image
+                ctx.drawImage(
+                    imagePreview,
+                    -imagePreview.naturalWidth / 2,
+                    -imagePreview.naturalHeight / 2,
+                    imagePreview.naturalWidth,
+                    imagePreview.naturalHeight
+                );
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'transformed-image.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>
