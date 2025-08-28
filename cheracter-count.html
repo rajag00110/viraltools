@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word & Character Counter | Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .site-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Counter Card */
+        .counter-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .counter-header {
+            margin-bottom: 25px;
+        }
+
+        .counter-title {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .counter-description {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Text Area */
+        .text-area {
+            margin-bottom: 30px;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            resize: vertical;
+        }
+
+        .text-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Stats Area */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-box {
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .clear-btn {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .clear-btn:hover {
+            background: #e2e6ea;
+        }
+
+        .copy-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .copy-btn:hover {
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 26px;
+            }
+            
+            .counter-card {
+                padding: 20px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-font"></i>
+                </div>
+                <h1 class="site-title">Viral Tools</h1>
+            </div>
+            <p class="tagline">Smart Online Tools for Everyone</p>
+        </header>
+
+        <div class="main-content">
+            <div class="counter-card">
+                <div class="counter-header">
+                    <h2 class="counter-title">Word & Character Counter</h2>
+                    <p class="counter-description">Count words, characters, sentences, paragraphs, spaces, and estimate reading time instantly.</p>
+                </div>
+
+                <div class="text-area">
+                    <textarea class="text-input" id="text-input" placeholder="Start typing or paste your text here..."></textarea>
+                </div>
+
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-value" id="word-count">0</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="char-count">0</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="char-no-space-count">0</div>
+                        <div class="stat-label">Characters (no spaces)</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="sentence-count">0</div>
+                        <div class="stat-label">Sentences</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="paragraph-count">0</div>
+                        <div class="stat-label">Paragraphs</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="space-count">0</div>
+                        <div class="stat-label">Spaces</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="reading-time">0</div>
+                        <div class="stat-label">Reading Time (min)</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn clear-btn" id="clear-btn">
+                        <i class="fas fa-eraser"></i> Clear Text
+                    </button>
+                    <button class="action-btn copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy Text
+                    </button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Real-time Counting</h3>
+                    <p>See instant updates as you type with our live counting algorithm</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Comprehensive Stats</h3>
+                    <p>Get detailed statistics including words, characters, sentences and more</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Use our counter on any device - smartphones, tablets, or desktop computers</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Viral Tools - Word & Character Counter. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const textInput = document.getElementById('text-input');
+            const wordCount = document.getElementById('word-count');
+            const charCount = document.getElementById('char-count');
+            const charNoSpaceCount = document.getElementById('char-no-space-count');
+            const sentenceCount = document.getElementById('sentence-count');
+            const paragraphCount = document.getElementById('paragraph-count');
+            const spaceCount = document.getElementById('space-count');
+            const readingTime = document.getElementById('reading-time');
+            const clearBtn = document.getElementById('clear-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            
+            // Count everything when text changes
+            textInput.addEventListener('input', updateCounts);
+            
+            // Clear text
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+                updateCounts();
+                textInput.focus();
+            });
+            
+            // Copy text
+            copyBtn.addEventListener('click', () => {
+                textInput.select();
+                document.execCommand('copy');
+                
+                // Show confirmation
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            });
+            
+            // Update all counts
+            function updateCounts() {
+                const text = textInput.value;
+                
+                // Character count (with spaces)
+                charCount.textContent = text.length;
+                
+                // Character count (without spaces)
+                charNoSpaceCount.textContent = text.replace(/\s/g, '').length;
+                
+                // Word count
+                const words = text.match(/\b\w+\b/g);
+                wordCount.textContent = words ? words.length : 0;
+                
+                // Sentence count
+                const sentences = text.split(/[.!?]+/).filter(s => s.length > 0);
+                sentenceCount.textContent = sentences.length;
+                
+                // Paragraph count
+                const paragraphs = text.split(/\n\s*\n/).filter(p => p.length > 0);
+                paragraphCount.textContent = paragraphs.length || (text.length > 0 ? 1 : 0);
+                
+                // Space count
+                const spaces = text.match(/\s/g);
+                spaceCount.textContent = spaces ? spaces.length : 0;
+                
+                // Reading time (assuming 225 words per minute)
+                const wordsCount = words ? words.length : 0;
+                readingTime.textContent = Math.ceil(wordsCount / 225);
+            }
+            
+            // Initialize counts
+            updateCounts();
+        });
+    </script>
+</body>
+</html>
