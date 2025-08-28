@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Scientific Calculator | Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .site-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Calculator Layout */
+        .calculator-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .calculator {
+            flex: 1;
+            min-width: 350px;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .graph-container {
+            flex: 2;
+            min-width: 350px;
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Display */
+        .display {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: right;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .calculation {
+            font-size: 18px;
+            color: var(--gray);
+            min-height: 27px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .result {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--dark);
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 5px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--light);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background: #e2e6ea;
+            transform: translateY(-2px);
+        }
+
+        .btn-number {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .btn-operator {
+            background: #e6f7ff;
+            color: var(--primary);
+        }
+
+        .btn-function {
+            background: #f0f8ff;
+            color: var(--secondary);
+        }
+
+        .btn-constant {
+            background: #f0f0f0;
+            color: var(--dark);
+        }
+
+        .btn-equals {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-clear {
+            background: linear-gradient(to right, var(--danger), #c0392b);
+            color: white;
+        }
+
+        .btn-memory {
+            background: #fff0f0;
+            color: var(--danger);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Graph Controls */
+        .graph-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .graph-controls input {
+            padding: 8px 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 4px;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .graph-controls button {
+            padding: 8px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .graph-controls button:hover {
+            background: var(--secondary);
+        }
+
+        /* Constants Panel */
+        .constants-panel {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .constants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .constant-item {
+            background: white;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .constant-item:hover {
+            background: #e6f7ff;
+            transform: translateY(-2px);
+        }
+
+        .constant-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .constant-value {
+            font-size: 14px;
+            color: var(--dark);
+        }
+
+        /* History */
+        .history-panel {
+            background: var(--light-gray);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .history-item:hover {
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .calculator-container {
+                flex-direction: column;
+            }
+            
+            .buttons {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .btn-equals {
+                grid-column: span 1;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 26px;
+            }
+            
+            .buttons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .result {
+                font-size: 28px;
+            }
+        }
+
+        /* Memory display */
+        .memory-display {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 10px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h1 class="site-title">Viral Tools</h1>
+            </div>
+            <p class="tagline">Advanced Scientific Calculator with Graphing</p>
+        </header>
+
+        <div class="main-content">
+            <div class="calculator-container">
+                <div class="calculator">
+                    <div class="display">
+                        <div class="calculation" id="calculation"></div>
+                        <div class="result" id="result">0</div>
+                    </div>
+                    
+                    <div class="buttons">
+                        <!-- Row 1 -->
+                        <button class="btn btn-memory" onclick="handleMemory('MC')">MC</button>
+                        <button class="btn btn-memory" onclick="handleMemory('MR')">MR</button>
+                        <button class="btn btn-memory" onclick="handleMemory('M+')">M+</button>
+                        <button class="btn btn-memory" onclick="handleMemory('M-')">M-</button>
+                        <button class="btn btn-clear" onclick="clearAll()">C</button>
+                        
+                        <!-- Row 2 -->
+                        <button class="btn btn-function" onclick="handleFunction('sin')">sin</button>
+                        <button class="btn btn-function" onclick="handleFunction('cos')">cos</button>
+                        <button class="btn btn-function" onclick="handleFunction('tan')">tan</button>
+                        <button class="btn btn-function" onclick="handleFunction('log')">log</button>
+                        <button class="btn btn-function" onclick="handleFunction('ln')">ln</button>
+                        
+                        <!-- Row 3 -->
+                        <button class="btn btn-function" onclick="handleFunction('π')">π</button>
+                        <button class="btn btn-function" onclick="handleFunction('e')">e</button>
+                        <button class="btn btn-function" onclick="handleFunction('√')">√</button>
+                        <button class="btn btn-function" onclick="handleFunction('^')">x^y</button>
+                        <button class="btn btn-function" onclick="handleFunction('!')">x!</button>
+                        
+                        <!-- Row 4 -->
+                        <button class="btn btn-operator" onclick="appendToDisplay('(')">(</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay(')')">)</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay('%')">%</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay('÷')">÷</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay('×')">×</button>
+                        
+                        <!-- Row 5 -->
+                        <button class="btn btn-number" onclick="appendToDisplay('7')">7</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('8')">8</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('9')">9</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay('-')">-</button>
+                        <button class="btn btn-function" onclick="handleFunction('1/x')">1/x</button>
+                        
+                        <!-- Row 6 -->
+                        <button class="btn btn-number" onclick="appendToDisplay('4')">4</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('5')">5</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('6')">6</button>
+                        <button class="btn btn-operator" onclick="appendToDisplay('+')">+</button>
+                        <button class="btn btn-function" onclick="handleFunction('10^x')">10^x</button>
+                        
+                        <!-- Row 7 -->
+                        <button class="btn btn-number" onclick="appendToDisplay('1')">1</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('2')">2</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('3')">3</button>
+                        <button class="btn btn-equals" onclick="calculate()">=</button>
+                        <button class="btn btn-function" onclick="handleFunction('e^x')">e^x</button>
+                        
+                        <!-- Row 8 -->
+                        <button class="btn btn-number" onclick="appendToDisplay('0')">0</button>
+                        <button class="btn btn-number" onclick="appendToDisplay('.')">.</button>
+                        <button class="btn btn-function" onclick="toggleSign()">±</button>
+                        <button class="btn btn-function" onclick="backspace()">⌫</button>
+                        <button class="btn btn-function" onclick="handleFunction('rand')">Rand</button>
+                    </div>
+                    
+                    <div class="memory-display" id="memory-display">
+                        Memory: 0
+                    </div>
+                    
+                    <div class="constants-panel">
+                        <h3>Scientific Constants</h3>
+                        <div class="constants-grid">
+                            <div class="constant-item" onclick="insertConstant('c', 'Speed of Light')">
+                                <div class="constant-name">Speed of Light (c)</div>
+                                <div class="constant-value">299792458 m/s</div>
+                            </div>
+                            <div class="constant-item" onclick="insertConstant('G', 'Gravitational Constant')">
+                                <div class="constant-name">Gravitational (G)</div>
+                                <div class="constant-value">6.67430e-11 m³/kg/s²</div>
+                            </div>
+                            <div class="constant-item" onclick="insertConstant('h', 'Planck Constant')">
+                                <div class="constant-name">Planck (h)</div>
+                                <div class="constant-value">6.62607015e-34 J·s</div>
+                            </div>
+                            <div class="constant-item" onclick="insertConstant('e', 'Elementary Charge')">
+                                <div class="constant-name">Elementary Charge (e)</div>
+                                <div class="constant-value">1.602176634e-19 C</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="history-panel" id="history-panel">
+                        <h3>History</h3>
+                        <div id="history-items"></div>
+                    </div>
+                </div>
+                
+                <div class="graph-container">
+                    <div class="tabs">
+                        <div class="tab active" onclick="switchTab('function')">Function Graph</div>
+                        <div class="tab" onclick="switchTab('equation')">Equation Solver</div>
+                    </div>
+                    
+                    <div id="function-tab">
+                        <div class="graph-controls">
+                            <input type="text" id="function-input" placeholder="Enter function, e.g., sin(x)" value="sin(x)">
+                            <input type="number" id="x-min" placeholder="X Min" value="-10" step="1">
+                            <input type="number" id="x-max" placeholder="X Max" value="10" step="1">
+                            <button onclick="plotFunction()">Plot Graph</button>
+                        </div>
+                        <canvas id="graph-canvas" height="300"></canvas>
+                    </div>
+                    
+                    <div id="equation-tab" style="display: none;">
+                        <div class="graph-controls">
+                            <input type="text" id="equation-input" placeholder="Enter equation, e.g., x^2 - 4">
+                            <button onclick="solveEquation()">Solve Equation</button>
+                        </div>
+                        <div id="equation-result" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                            Solution will appear here
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calculator state
+        let currentInput = '0';
+        let calculation = '';
+        let memory = 0;
+        let history = [];
+        let graph = null;
+        
+        // DOM Elements
+        const resultElement = document.getElementById('result');
+        const calculationElement = document.getElementById('calculation');
+        const memoryDisplayElement = document.getElementById('memory-display');
+        const historyItemsElement = document.getElementById('history-items');
+        
+        // Initialize calculator
+        function initCalculator() {
+            updateDisplay();
+        }
+        
+        // Update display
+        function updateDisplay() {
+            resultElement.textContent = currentInput;
+            calculationElement.textContent = calculation;
+            memoryDisplayElement.textContent = `Memory: ${memory}`;
+        }
+        
+        // Append to display
+        function appendToDisplay(value) {
+            if (currentInput === '0' && value !== '.') {
+                currentInput = value;
+            } else {
+                currentInput += value;
+            }
+            updateDisplay();
+        }
+        
+        // Clear display
+        function clearAll() {
+            currentInput = '0';
+            calculation = '';
+            updateDisplay();
+        }
+        
+        // Backspace
+        function backspace() {
+            if (currentInput.length > 1) {
+                currentInput = currentInput.slice(0, -1);
+            } else {
+                currentInput = '0';
+            }
+            updateDisplay();
+        }
+        
+        // Toggle sign
+        function toggleSign() {
+            if (currentInput.startsWith('-')) {
+                currentInput = currentInput.substring(1);
+            } else {
+                currentInput = '-' + currentInput;
+            }
+            updateDisplay();
+        }
+        
+        // Handle memory functions
+        function handleMemory(op) {
+            switch(op) {
+                case 'MC':
+                    memory = 0;
+                    break;
+                case 'MR':
+                    currentInput = memory.toString();
+                    break;
+                case 'M+':
+                    memory += parseFloat(currentInput);
+                    break;
+                case 'M-':
+                    memory -= parseFloat(currentInput);
+                    break;
+            }
+            updateDisplay();
+        }
+        
+        // Handle scientific functions
+        function handleFunction(func) {
+            const inputValue = parseFloat(currentInput);
+            
+            switch(func) {
+                case 'sin':
+                    currentInput = Math.sin(inputValue * Math.PI / 180).toString();
+                    calculation = `sin(${inputValue})`;
+                    break;
+                case 'cos':
+                    currentInput = Math.cos(inputValue * Math.PI / 180).toString();
+                    calculation = `cos(${inputValue})`;
+                    break;
+                case 'tan':
+                    currentInput = Math.tan(inputValue * Math.PI / 180).toString();
+                    calculation = `tan(${inputValue})`;
+                    break;
+                case 'log':
+                    currentInput = Math.log10(inputValue).toString();
+                    calculation = `log(${inputValue})`;
+                    break;
+                case 'ln':
+                    currentInput = Math.log(inputValue).toString();
+                    calculation = `ln(${inputValue})`;
+                    break;
+                case '√':
+                    currentInput = Math.sqrt(inputValue).toString();
+                    calculation = `√(${inputValue})`;
+                    break;
+                case '^':
+                    calculation = currentInput + '^';
+                    currentInput = '0';
+                    break;
+                case '!':
+                    currentInput = factorial(inputValue).toString();
+                    calculation = `factorial(${inputValue})`;
+                    break;
+                case '1/x':
+                    currentInput = (1 / inputValue).toString();
+                    calculation = `1/(${inputValue})`;
+                    break;
+                case '10^x':
+                    currentInput = Math.pow(10, inputValue).toString();
+                    calculation = `10^${inputValue}`;
+                    break;
+                case 'e^x':
+                    currentInput = Math.exp(inputValue).toString();
+                    calculation = `e^${inputValue}`;
+                    break;
+                case 'π':
+                    currentInput = Math.PI.toString();
+                    break;
+                case 'e':
+                    currentInput = Math.E.toString();
+                    break;
+                case 'rand':
+                    currentInput = Math.random().toString();
+                    calculation = 'Random';
+                    break;
+            }
+            
+            addToHistory(calculation, currentInput);
+            updateDisplay();
+        }
+        
+        // Factorial function
+        function factorial(n) {
+            if (n < 0) return NaN;
+            if (n === 0 || n === 1) return 1;
+            
+            let result = 1;
+            for (let i = 2; i <= n; i++) {
+                result *= i;
+            }
+            return result;
+        }
+        
+        // Calculate expression
+        function calculate() {
+            try {
+                // Replace visual operators with JavaScript operators
+                let expression = calculation + currentInput;
+                expression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+                
+                // Evaluate the expression
+                const result = eval(expression);
+                
+                // Add to history
+                addToHistory(expression, result);
+                
+                // Update display
+                calculation = '';
+                currentInput = result.toString();
+                updateDisplay();
+            } catch (error) {
+                currentInput = 'Error';
+                updateDisplay();
+                setTimeout(() => {
+                    currentInput = '0';
+                    calculation = '';
+                    updateDisplay();
+                }, 1500);
+            }
+        }
+        
+        // Add calculation to history
+        function addToHistory(expression, result) {
+            history.unshift({ expression, result });
+            
+            // Keep only last 10 history items
+            if (history.length > 10) {
+                history.pop();
+            }
+            
+            // Update history display
+            updateHistoryDisplay();
+        }
+        
+        // Update history display
+        function updateHistoryDisplay() {
+            historyItemsElement.innerHTML = '';
+            
+            history.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `<strong>${item.expression}</strong> = ${item.result}`;
+                
+                historyItem.addEventListener('click', () => {
+                    currentInput = item.result;
+                    updateDisplay();
+                });
+                
+                historyItemsElement.appendChild(historyItem);
+            });
+        }
+        
+        // Insert constant
+        function insertConstant(symbol, name) {
+            let value;
+            
+            switch(symbol) {
+                case 'c':
+                    value = 299792458;
+                    break;
+                case 'G':
+                    value = 6.67430e-11;
+                    break;
+                case 'h':
+                    value = 6.62607015e-34;
+                    break;
+                case 'e':
+                    value = 1.602176634e-19;
+                    break;
+                default:
+                    value = 0;
+            }
+            
+            currentInput = value.toString();
+            calculation = name + ' = ';
+            updateDisplay();
+        }
+        
+        // Switch between tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById('function-tab').style.display = 'none';
+            document.getElementById('equation-tab').style.display = 'none';
+            
+            if (tabName === 'function') {
+                document.querySelector('.tab:first-child').classList.add('active');
+                document.getElementById('function-tab').style.display = 'block';
+            } else {
+                document.querySelector('.tab:last-child').classList.add('active');
+                document.getElementById('equation-tab').style.display = 'block';
+            }
+        }
+        
+        // Plot function graph
+        function plotFunction() {
+            const functionInput = document.getElementById('function-input').value;
+            const xMin = parseFloat(document.getElementById('x-min').value);
+            const xMax = parseFloat(document.getElementById('x-max').value);
+            
+            if (!functionInput) {
+                alert('Please enter a function');
+                return;
+            }
+            
+            // Generate data points
+            const labels = [];
+            const data = [];
+            const step = (xMax - xMin) / 100;
+            
+            for (let x = xMin; x <= xMax; x += step) {
+                try {
+                    // Replace function expression with evaluable JavaScript
+                    let expression = functionInput.replace(/sin\(/g, 'Math.sin(')
+                                                .replace(/cos\(/g, 'Math.cos(')
+                                                .replace(/tan\(/g, 'Math.tan(')
+                                                .replace(/log\(/g, 'Math.log10(')
+                                                .replace(/ln\(/g, 'Math.log(')
+                                                .replace(/sqrt\(/g, 'Math.sqrt(')
+                                                .replace(/π/g, 'Math.PI')
+                                                .replace(/e(?![a-zA-Z])/g, 'Math.E');
+                    
+                    // Evaluate the function at point x
+                    const y = eval(expression.replace(/x/g, `(${x})`));
+                    
+                    labels.push(x.toFixed(2));
+                    data.push(y);
+                } catch (error) {
+                    console.error('Error evaluating function:', error);
+                }
+            }
+            
+            // Get canvas context
+            const ctx = document.getElementById('graph-canvas').getContext('2d');
+            
+            // Destroy previous chart if it exists
+            if (graph) {
+                graph.destroy();
+            }
+            
+            // Create new chart
+            graph = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: `f(x) = ${functionInput}`,
+                        data: data,
+                        borderColor: '#4361ee',
+                        backgroundColor: 'rgba(67, 97, 238, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Graph of f(x) = ${functionInput}`
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'x'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'f(x)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Solve equation
+        function solveEquation() {
+            const equationInput = document.getElementById('equation-input').value;
+            
+            if (!equationInput) {
+                alert('Please enter an equation');
+                return;
+            }
+            
+            // Simple equation solving for demonstration
+            // This is a very basic implementation
+            try {
+                // Try to find roots using a simple iterative approach
+                let equation = equationInput.replace(/x/g, 'x');
+                
+                // Define the function
+                const func = x => {
+                    try {
+                        return eval(equation.replace(/x/g, `(${x})`)
+                                            .replace(/sin\(/g, 'Math.sin(')
+                                            .replace(/cos\(/g, 'Math.cos(')
+                                            .replace(/tan\(/g, 'Math.tan(')
+                                            .replace(/log\(/g, 'Math.log10(')
+                                            .replace(/ln\(/g, 'Math.log(')
+                                            .replace(/sqrt\(/g, 'Math.sqrt(')
+                                            .replace(/π/g, 'Math.PI')
+                                            .replace(/e(?![a-zA-Z])/g, 'Math.E'));
+                    } catch (e) {
+                        return NaN;
+                    }
+                };
+                
+                // Simple root finding algorithm (bisection method)
+                let a = -10, b = 10;
+                let fa = func(a);
+                let fb = func(b);
+                
+                if (fa * fb >= 0) {
+                    document.getElementById('equation-result').innerHTML = 
+                        '<p>Could not find root in the range [-10, 10]. Try a different range.</p>';
+                    return;
+                }
+                
+                let c = a;
+                for (let i = 0; i < 100; i++) {
+                    c = (a + b) / 2;
+                    let fc = func(c);
+                    
+                    if (fc === 0 || (b - a) / 2 < 0.001) {
+                        break;
+                    }
+                    
+                    if (fc * fa < 0) {
+                        b = c;
+                        fb = fc;
+                    } else {
+                        a = c;
+                        fa = fc;
+                    }
+                }
+                
+                document.getElementById('equation-result').innerHTML = `
+                    <p>Equation: ${equationInput} = 0</p>
+                    <p>Solution: x ≈ ${c.toFixed(4)}</p>
+                    <p>f(${c.toFixed(4)}) = ${func(c).toFixed(6)}</p>
+                `;
+            } catch (error) {
+                document.getElementById('equation-result').innerHTML = 
+                    '<p>Error solving equation. Please check your input.</p>';
+            }
+        }
+        
+        // Initialize calculator on load
+        window.onload = function() {
+            initCalculator();
+            plotFunction(); // Plot default function
+        };
+    </script>
+</body>
+</html>
