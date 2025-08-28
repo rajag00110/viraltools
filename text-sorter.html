@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Sorter | Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .site-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Tool Card */
+        .tool-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .tool-header {
+            margin-bottom: 25px;
+        }
+
+        .tool-title {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tool-description {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Text Areas */
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .text-areas {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .text-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-label {
+            text-align: left;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .text-input {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            font-family: monospace;
+            font-size: 15px;
+            transition: var(--transition);
+            resize: vertical;
+        }
+
+        .text-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        /* Sorting Options */
+        .sort-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            padding: 15px;
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            text-align: left;
+        }
+
+        .option-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .option-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .option-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid var(--light-gray);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            min-width: 90px;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+        }
+
+        .option-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .sort-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .sort-btn:hover {
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .clear-btn {
+            background: var(--light-gray);
+            color: var(--dark);
+        }
+
+        .clear-btn:hover {
+            background: #e2e6ea;
+        }
+
+        .copy-btn {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+        }
+
+        .copy-btn:hover {
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sort-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 26px;
+            }
+            
+            .tool-card {
+                padding: 20px;
+            }
+            
+            .option-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-sort-alpha-down"></i>
+                </div>
+                <h1 class="site-title">Viral Tools</h1>
+            </div>
+            <p class="tagline">Smart Online Tools for Everyone</p>
+        </header>
+
+        <div class="main-content">
+            <div class="tool-card">
+                <div class="tool-header">
+                    <h2 class="tool-title">Text Sorter</h2>
+                    <p class="tool-description">Sort lines of text alphabetically, numerically, or by length in ascending or descending order.</p>
+                </div>
+
+                <div class="text-areas">
+                    <div class="text-area">
+                        <div class="text-label">
+                            <i class="fas fa-pencil-alt"></i>
+                            <span>Input Text</span>
+                        </div>
+                        <textarea class="text-input" id="input-text" placeholder="Enter your text to sort (one item per line)..."></textarea>
+                    </div>
+                    <div class="text-area">
+                        <div class="text-label">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Sorted Text</span>
+                        </div>
+                        <textarea class="text-input" id="output-text" placeholder="Your sorted text will appear here..." readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="sort-options">
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-font"></i>
+                            <span>Sort By</span>
+                        </div>
+                        <div class="option-buttons">
+                            <div class="option-btn active" data-sort-type="alphabetical">Alphabetical</div>
+                            <div class="option-btn" data-sort-type="numerical">Numerical</div>
+                            <div class="option-btn" data-sort-type="length">Line Length</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-sort"></i>
+                            <span>Sort Order</span>
+                        </div>
+                        <div class="option-buttons">
+                            <div class="option-btn active" data-sort-order="ascending">Ascending</div>
+                            <div class="option-btn" data-sort-order="descending">Descending</div>
+                        </div>
+                    </div>
+                    
+                    <div class="option-group">
+                        <div class="option-title">
+                            <i class="fas fa-tasks"></i>
+                            <span>Options</span>
+                        </div>
+                        <div class="option-buttons">
+                            <div class="option-btn active" data-option="ignore-case">Ignore Case</div>
+                            <div class="option-btn" data-option="reverse">Reverse Order</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn sort-btn" id="sort-btn">
+                        <i class="fas fa-sort-amount-down"></i> Sort Text
+                    </button>
+                    <button class="action-btn clear-btn" id="clear-btn">
+                        <i class="fas fa-eraser"></i> Clear All
+                    </button>
+                    <button class="action-btn copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy Result
+                    </button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-sort-alpha-down"></i>
+                    </div>
+                    <h3>Multiple Sort Methods</h3>
+                    <p>Sort text alphabetically, numerically, or by line length with customizable options</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-arrows-alt-v"></i>
+                    </div>
+                    <h3>Ascending & Descending</h3>
+                    <p>Choose between ascending or descending order for your sorted text</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3>Advanced Options</h3>
+                    <p>Ignore case when sorting or reverse the order of your sorted text with one click</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Viral Tools - Text Sorter. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const inputText = document.getElementById('input-text');
+            const outputText = document.getElementById('output-text');
+            const sortBtn = document.getElementById('sort-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const optionButtons = document.querySelectorAll('.option-btn');
+            
+            // Current settings
+            let settings = {
+                sortType: 'alphabetical',
+                sortOrder: 'ascending',
+                ignoreCase: true,
+                reverse: false
+            };
+            
+            // Set up option button click handlers
+            optionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const optionType = this.parentElement.parentElement.querySelector('.option-title span').textContent;
+                    const optionValue = this.getAttribute('data-sort-type') || 
+                                       this.getAttribute('data-sort-order') || 
+                                       this.getAttribute('data-option');
+                    
+                    // For option groups, only one can be active
+                    if (optionType === 'Sort By' || optionType === 'Sort Order') {
+                        this.parentElement.querySelectorAll('.option-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                    }
+                    
+                    this.classList.toggle('active');
+                    
+                    // Update settings
+                    if (optionValue === 'alphabetical' || optionValue === 'numerical' || optionValue === 'length') {
+                        settings.sortType = optionValue;
+                    } else if (optionValue === 'ascending' || optionValue === 'descending') {
+                        settings.sortOrder = optionValue;
+                    } else if (optionValue === 'ignore-case') {
+                        settings.ignoreCase = this.classList.contains('active');
+                    } else if (optionValue === 'reverse') {
+                        settings.reverse = this.classList.contains('active');
+                    }
+                });
+            });
+            
+            // Sort text
+            sortBtn.addEventListener('click', sortText);
+            
+            // Clear all text
+            clearBtn.addEventListener('click', () => {
+                inputText.value = '';
+                outputText.value = '';
+                inputText.focus();
+            });
+            
+            // Copy result
+            copyBtn.addEventListener('click', () => {
+                outputText.select();
+                document.execCommand('copy');
+                
+                // Show confirmation
+                const originalText = copyBtn.innerHTML;
+                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalText;
+                }, 2000);
+            });
+            
+            // Sort the text based on selected options
+            function sortText() {
+                const text = inputText.value;
+                if (!text.trim()) {
+                    outputText.value = '';
+                    return;
+                }
+                
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                let sortedLines;
+                
+                // Sort based on selected method
+                switch(settings.sortType) {
+                    case 'alphabetical':
+                        sortedLines = lines.sort((a, b) => {
+                            let aVal = settings.ignoreCase ? a.toLowerCase() : a;
+                            let bVal = settings.ignoreCase ? b.toLowerCase() : b;
+                            return aVal.localeCompare(bVal);
+                        });
+                        break;
+                        
+                    case 'numerical':
+                        sortedLines = lines.sort((a, b) => {
+                            // Extract numbers from strings for comparison
+                            const aNum = parseFloat(a.replace(/[^\d.-]/g, '')) || 0;
+                            const bNum = parseFloat(b.replace(/[^\d.-]/g, '')) || 0;
+                            return aNum - bNum;
+                        });
+                        break;
+                        
+                    case 'length':
+                        sortedLines = lines.sort((a, b) => a.length - b.length);
+                        break;
+                }
+                
+                // Apply order (ascending/descending)
+                if (settings.sortOrder === 'descending') {
+                    sortedLines.reverse();
+                }
+                
+                // Apply reverse option if selected
+                if (settings.reverse) {
+                    sortedLines.reverse();
+                }
+                
+                // Update output
+                outputText.value = sortedLines.join('\n');
+            }
+        });
+    </script>
+</body>
+</html>
