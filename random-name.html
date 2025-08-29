@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Generator | Viral Tools</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --border-radius: 12px;
+            --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: var(--box-shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .site-title {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 16px;
+            color: var(--gray);
+            margin-top: 5px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--light-gray);
+        }
+
+        .tab {
+            padding: 12px 25px;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary);
+            color: var(--primary);
+        }
+
+        /* Generator Card */
+        .generator-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .generator-header {
+            margin-bottom: 25px;
+        }
+
+        .generator-title {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .generator-description {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Options Area */
+        .options-area {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .option-group {
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 20px;
+        }
+
+        .option-title {
+            font-size: 18px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-item {
+            margin-bottom: 15px;
+        }
+
+        .option-item label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .range-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius);
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        /* Result Area */
+        .result-area {
+            background: var(--light-gray);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .result-title {
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generated-result {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            word-break: break-all;
+            margin-bottom: 20px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .strength-meter {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 5px;
+            transition: var(--transition);
+        }
+
+        .strength-label {
+            font-size: 14px;
+            text-align: right;
+            color: var(--gray);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .generate-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        .generate-btn:hover {
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+        }
+
+        .copy-btn {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .copy-btn:hover {
+            background: #e2e6ea;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+
+        .feature:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature h3 {
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .feature p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            color: var(--gray);
+            font-size: 14px;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .options-area {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 26px;
+            }
+            
+            .generator-card {
+                padding: 20px;
+            }
+            
+            .option-group {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-key"></i>
+                </div>
+                <h1 class="site-title">Viral Tools</h1>
+            </div>
+            <p class="tagline">Smart Online Tools for Everyone</p>
+        </header>
+
+        <div class="main-content">
+            <div class="tabs">
+                <div class="tab active" data-tab="password">Password Generator</div>
+                <div class="tab" data-tab="number">Random Number Generator</div>
+            </div>
+
+            <div class="generator-card">
+                <div class="generator-header">
+                    <h2 class="generator-title" id="generator-title">Password Generator</h2>
+                    <p class="generator-description" id="generator-description">Create strong and secure passwords with custom rules</p>
+                </div>
+
+                <!-- Password Options -->
+                <div class="options-area" id="password-options">
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-ruler"></i> Length</h3>
+                        <div class="option-item">
+                            <div class="range-container">
+                                <input type="range" id="password-length" min="6" max="32" value="12">
+                                <div class="range-values">
+                                    <span>6</span>
+                                    <span id="length-value">12</span>
+                                    <span>32</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-toggle-on"></i> Character Types</h3>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="uppercase" checked>
+                                <span>Uppercase Letters (A-Z)</span>
+                            </label>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="lowercase" checked>
+                                <span>Lowercase Letters (a-z)</span>
+                            </label>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="numbers" checked>
+                                <span>Numbers (0-9)</span>
+                            </label>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="symbols">
+                                <span>Symbols (!@#$%^&*)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-ban"></i> Exclude Characters</h3>
+                        <div class="option-item">
+                            <label for="exclude-chars">Characters to exclude:</label>
+                            <input type="text" id="exclude-chars" placeholder="e.g., 0oO1lI">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Number Options -->
+                <div class="options-area" id="number-options" style="display: none;">
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-minus"></i> Minimum Value</h3>
+                        <div class="option-item">
+                            <input type="number" id="min-value" value="1" min="-1000000" max="1000000">
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-plus"></i> Maximum Value</h3>
+                        <div class="option-item">
+                            <input type="number" id="max-value" value="100" min="-1000000" max="1000000">
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-hashtag"></i> Quantity</h3>
+                        <div class="option-item">
+                            <input type="number" id="quantity" value="1" min="1" max="1000">
+                        </div>
+                    </div>
+
+                    <div class="option-group">
+                        <h3 class="option-title"><i class="fas fa-check-double"></i> Options</h3>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="unique">
+                                <span>Unique values only</span>
+                            </label>
+                        </div>
+                        <div class="option-item">
+                            <label>
+                                <input type="checkbox" id="sorted">
+                                <span>Sort results</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="result-area">
+                    <h3 class="result-title"><i class="fas fa-key"></i> Generated Result</h3>
+                    <div class="generated-result" id="generated-result">Your result will appear here</div>
+                    
+                    <div id="password-strength" style="display: none;">
+                        <div class="strength-meter">
+                            <div class="strength-fill" id="strength-fill"></div>
+                        </div>
+                        <div class="strength-label" id="strength-label">Password strength: </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn generate-btn" id="generate-btn">
+                        <i class="fas fa-sync-alt"></i> Generate
+                    </button>
+                    <button class="action-btn copy-btn" id="copy-btn">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+            </div>
+
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Secure Generation</h3>
+                    <p>Our tool uses cryptographically secure random generation algorithms for maximum security</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-sliders-h"></i>
+                    </div>
+                    <h3>Customizable Options</h3>
+                    <p>Fine-tune your passwords and numbers with extensive customization options</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Instant Results</h3>
+                    <p>Generate results instantly with our optimized algorithms and clean interface</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 Viral Tools - Random Generator. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const tabs = document.querySelectorAll('.tab');
+            const passwordOptions = document.getElementById('password-options');
+            const numberOptions = document.getElementById('number-options');
+            const generatorTitle = document.getElementById('generator-title');
+            const generatorDescription = document.getElementById('generator-description');
+            const passwordLength = document.getElementById('password-length');
+            const lengthValue = document.getElementById('length-value');
+            const uppercase = document.getElementById('uppercase');
+            const lowercase = document.getElementById('lowercase');
+            const numbers = document.getElementById('numbers');
+            const symbols = document.getElementById('symbols');
+            const excludeChars = document.getElementById('exclude-chars');
+            const minValue = document.getElementById('min-value');
+            const maxValue = document.getElementById('max-value');
+            const quantity = document.getElementById('quantity');
+            const unique = document.getElementById('unique');
+            const sorted = document.getElementById('sorted');
+            const generateBtn = document.getElementById('generate-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const generatedResult = document.getElementById('generated-result');
+            const passwordStrength = document.getElementById('password-strength');
+            const strengthFill = document.getElementById('strength-fill');
+            const strengthLabel = document.getElementById('strength-label');
+            
+            let currentTab = 'password';
+            
+            // Update length value display
+            passwordLength.addEventListener('input', () => {
+                lengthValue.textContent = passwordLength.value;
+            });
+            
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentTab = tab.getAttribute('data-tab');
+                    
+                    if (currentTab === 'password') {
+                        passwordOptions.style.display = 'grid';
+                        numberOptions.style.display = 'none';
+                        generatorTitle.textContent = 'Password Generator';
+                        generatorDescription.textContent = 'Create strong and secure passwords with custom rules';
+                        passwordStrength.style.display = 'block';
+                    } else {
+                        passwordOptions.style.display = 'none';
+                        numberOptions.style.display = 'grid';
+                        generatorTitle.textContent = 'Random Number Generator';
+                        generatorDescription.textContent = 'Generate random numbers with custom ranges and options';
+                        passwordStrength.style.display = 'none';
+                    }
+                });
+            });
+            
+            // Generate function
+            generateBtn.addEventListener('click', generate);
+            
+            // Copy function
+            copyBtn.addEventListener('click', () => {
+                const text = generatedResult.textContent;
+                navigator.clipboard.writeText(text).then(() => {
+                    // Show confirmation
+                    const originalText = copyBtn.innerHTML;
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                    
+                    setTimeout(() => {
+                        copyBtn.innerHTML = originalText;
+                    }, 2000);
+                });
+            });
+            
+            function generate() {
+                if (currentTab === 'password') {
+                    generatePassword();
+                } else {
+                    generateNumbers();
+                }
+            }
+            
+            function generatePassword() {
+                // Character sets
+                const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+                const numberChars = '0123456789';
+                const symbolChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+                
+                // Build character pool based on selected options
+                let charPool = '';
+                if (uppercase.checked) charPool += upperChars;
+                if (lowercase.checked) charPool += lowerChars;
+                if (numbers.checked) charPool += numberChars;
+                if (symbols.checked) charPool += symbolChars;
+                
+                // Remove excluded characters
+                const exclude = excludeChars.value;
+                if (exclude) {
+                    for (let char of exclude) {
+                        charPool = charPool.replace(char, '');
+                    }
+                }
+                
+                // Check if any character types are selected
+                if (charPool.length === 0) {
+                    generatedResult.textContent = 'Please select at least one character type';
+                    return;
+                }
+                
+                // Generate password
+                const length = parseInt(passwordLength.value);
+                let password = '';
+                
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * charPool.length);
+                    password += charPool[randomIndex];
+                }
+                
+                // Display password
+                generatedResult.textContent = password;
+                
+                // Calculate and display password strength
+                calculatePasswordStrength(password);
+            }
+            
+            function generateNumbers() {
+                const min = parseInt(minValue.value);
+                const max = parseInt(maxValue.value);
+                const count = parseInt(quantity.value);
+                const uniqueValues = unique.checked;
+                const sortValues = sorted.checked;
+                
+                // Validate inputs
+                if (min > max) {
+                    generatedResult.textContent = 'Minimum value cannot be greater than maximum value';
+                    return;
+                }
+                
+                if (uniqueValues && (max - min + 1) < count) {
+                    generatedResult.textContent = 'Range too small for unique values';
+                    return;
+                }
+                
+                // Generate numbers
+                let results = [];
+                
+                if (uniqueValues) {
+                    // Generate unique numbers
+                    const possibleValues = [];
+                    for (let i = min; i <= max; i++) {
+                        possibleValues.push(i);
+                    }
+                    
+                    // Shuffle and take required amount
+                    for (let i = possibleValues.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [possibleValues[i], possibleValues[j]] = [possibleValues[j], possibleValues[i]];
+                    }
+                    
+                    results = possibleValues.slice(0, count);
+                } else {
+                    // Generate numbers with possible duplicates
+                    for (let i = 0; i < count; i++) {
+                        results.push(Math.floor(Math.random() * (max - min + 1)) + min);
+                    }
+                }
+                
+                // Sort if requested
+                if (sortValues) {
+                    results.sort((a, b) => a - b);
+                }
+                
+                // Display results
+                if (count === 1) {
+                    generatedResult.textContent = results[0];
+                } else {
+                    generatedResult.textContent = results.join(', ');
+                }
+            }
+            
+            function calculatePasswordStrength(password) {
+                let strength = 0;
+                
+                // Length factor
+                if (password.length >= 8) strength += 1;
+                if (password.length >= 12) strength += 1;
+                if (password.length >= 16) strength += 1;
+                
+                // Character variety
+                if (/[A-Z]/.test(password)) strength += 1; // Uppercase
+                if (/[a-z]/.test(password)) strength += 1; // Lowercase
+                if (/[0-9]/.test(password)) strength += 1; // Numbers
+                if (/[^A-Za-z0-9]/.test(password)) strength += 2; // Symbols
+                
+                // Update strength meter
+                let width, color, label;
+                
+                if (strength <= 2) {
+                    width = '25%';
+                    color = '#e74c3c';
+                    label = 'Weak';
+                } else if (strength <= 4) {
+                    width = '50%';
+                    color = '#f39c12';
+                    label = 'Fair';
+                } else if (strength <= 6) {
+                    width = '75%';
+                    color = '#3498db';
+                    label = 'Good';
+                } else {
+                    width = '100%';
+                    color = '#2ecc71';
+                    label = 'Strong';
+                }
+                
+                strengthFill.style.width = width;
+                strengthFill.style.background = color;
+                strengthLabel.textContent = `Password strength: ${label}`;
+            }
+            
+            // Initial generation
+            generate();
+        });
+    </script>
+</body>
+</html>
