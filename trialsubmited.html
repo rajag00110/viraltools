@@ -25,6 +25,11 @@
         h1, h2, h3 {
             font-family: 'Montserrat', sans-serif;
         }
+        /* Mobile-first tab styling fix for better spacing */
+        .tab-button {
+            padding-left: 0.5rem; /* px-2 on mobile */
+            padding-right: 0.5rem; /* px-2 on mobile */
+        }
         .tab-active {
             border-color: #3b82f6;
             color: #3b82f6;
@@ -51,7 +56,7 @@
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px;
+            height: 300px; /* Base height for mobile */
             max-height: 400px;
         }
         @media (min-width: 768px) {
@@ -66,34 +71,41 @@
         <header class="text-center mb-8">
             <h1 class="text-3xl md:text-4xl font-bold text-gray-800">Social Media & Content Executive</h1>
             <p class="text-lg text-gray-600 mt-2">1-Day Assessment Showcase</p>
-            <div class="mt-4 text-sm text-gray-500">
-                <span><strong>👤 Name:</strong> Raja Zohaib</span> |
-                <span><strong>📅 Date:</strong> 7 October 2025</span>
+            <!-- Mobile Responsiveness: Use flex-wrap and space-x-2 for small screens -->
+            <div class="mt-4 text-sm text-gray-500 flex flex-wrap justify-center space-x-2">
+                <span><strong>👤 Name:</strong> Raja Zohaib</span> 
+                <span class="hidden sm:inline">|</span> 
+                <span class="block sm:hidden w-full h-1"></span>
+                <span><strong>📅 Date:</strong> 8 October 2025</span>
             </div>
         </header>
 
         <main>
             <div class="border-b border-gray-200 mb-8">
-                <nav class="-mb-px flex justify-center space-x-4 md:space-x-8" aria-label="Tabs">
-                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base tab-active" data-tab="showcase">
-                        1️⃣ Content Showcase
+                <!-- Tabs: Adjust spacing for mobile to prevent overflow -->
+                <nav class="-mb-px flex justify-center space-x-2 md:space-x-8" aria-label="Tabs">
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm md:text-base tab-active" data-tab="showcase">
+                        1️⃣ Showcase
                     </button>
-                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base tab-inactive" data-tab="insights">
-                        2️⃣ Strategic Insights
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm md:text-base tab-inactive" data-tab="insights">
+                        2️⃣ Insights
                     </button>
-                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm md:text-base tab-inactive" data-tab="skills">
-                        3️⃣ Process & Skills
+                    <button class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-xs sm:text-sm md:text-base tab-inactive" data-tab="skills">
+                        3️⃣ Skills
                     </button>
                 </nav>
             </div>
 
             <div id="showcase" class="content-section active">
-                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Content Idea: "Stuck? You're Not Alone."</h2>
-                    <p class="text-gray-600 mb-6">This section presents the core deliverable: a complete social media post concept designed to resonate with professionals on their career journey. Interact with the elements below to see the full concept.</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        <div class="flex justify-center">
-                            <!-- CRITICAL: Is jagah par aapko apni 'design_post.png' file ka direct Raw GitHub URL paste karna hai. Agar URL sahi hoga toh image show ho jayegi. -->
+                <!-- Padding adjusted to p-4 sm:p-6 md:p-8 -->
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Content Idea: "Stuck? You're Not Alone."</h2>
+                    <p class="text-sm sm:text-base text-gray-600 mb-6">This section presents the core deliverable: a complete social media post concept designed to resonate with professionals on their career journey. Interact with the elements below to see the full concept.</p>
+                    
+                    <!-- Grid: Stacks on mobile (col-1), goes two columns on medium/desktop -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
+                        <div class="flex justify-center order-1">
+                            <!-- Image Sizing: max-w-xs is good for mobile constraint -->
                             <img 
                                 src="https://viraltools.site/design_post.png" 
                                 alt="Instagram post design (design_post.png)" 
@@ -101,18 +113,19 @@
                                 onerror="this.onerror=null; this.src='https://placehold.co/400x400/1e3a8a/ffffff?text=IMAGE+URL+NEEDED';"
                             >
                         </div>
-                        <div class="space-y-4">
+                        <div class="space-y-4 order-2">
                             <div>
-                                <h3 class="text-lg font-semibold text-gray-700">🔹 Post Headline</h3>
-                                <p class="text-gray-600 italic mt-1 pl-3 border-l-4 border-blue-500">“Stuck? You’re Not Alone.”<br>The Hidden Power of Asking for Help in Your Career Journey</p>
+                                <h3 class="text-base sm:text-lg font-semibold text-gray-700">🔹 Post Headline</h3>
+                                <p class="text-sm text-gray-600 italic mt-1 pl-3 border-l-4 border-blue-500">“Stuck? You’re Not Alone.”<br>The Hidden Power of Asking for Help in Your Career Journey</p>
                             </div>
+                            <!-- Accordions are responsive by design -->
                             <div class="border rounded-lg">
-                                <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700">
+                                <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 text-sm sm:text-base">
                                     <span>🔹 View Caption</span>
                                     <span class="transform transition-transform duration-300">▼</span>
                                 </button>
                                 <div class="accordion-content px-4">
-                                    <p class="text-gray-600 pb-4">
+                                    <p class="text-sm text-gray-600 pb-4">
                                         Feeling stuck in your career doesn’t mean you’re failing — it means you’re growing. 🌱<br>
                                         Even the most successful professionals have moments where they feel lost or uncertain.<br>
                                         The real strength lies in reaching out — asking for guidance, seeking feedback, and learning from those who’ve walked the path before you. 💬<br><br>
@@ -121,12 +134,12 @@
                                 </div>
                             </div>
                             <div class="border rounded-lg">
-                                <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700">
+                                <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 text-sm sm:text-base">
                                     <span>🔹 View Hashtags</span>
                                     <span class="transform transition-transform duration-300">▼</span>
                                 </button>
                                 <div class="accordion-content px-4">
-                                    <p class="text-blue-600 font-medium pb-4">
+                                    <p class="text-sm text-blue-600 font-medium pb-4">
                                         #CareerGrowth #JobMotivation #ProfessionalJourney #CareerAdvice #EcommerceHouse
                                     </p>
                                 </div>
@@ -137,25 +150,29 @@
             </div>
 
             <div id="insights" class="content-section">
-                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Market Research & Strategic Insights</h2>
-                    <p class="text-gray-600 mb-6">Effective content is built on a foundation of research. This section outlines the key trends and insights that informed the content strategy for the 'career growth' niche in 2025.</p>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Padding adjusted to p-4 sm:p-6 md:p-8 -->
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Market Research & Strategic Insights</h2>
+                    <p class="text-sm sm:text-base text-gray-600 mb-6">Effective content is built on a foundation of research. This section outlines the key trends and insights that informed the content strategy for the 'career growth' niche in 2025.</p>
+                    
+                    <!-- Grid: Stacks on mobile, goes two columns on large screens -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Key Content Trends</h3>
-                            <ul class="space-y-3 text-gray-600">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Key Content Trends</h3>
+                            <ul class="space-y-3 text-sm text-gray-600">
                                 <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">●</span><span><strong>Carousel Posts:</strong> Trending for their high informational value and professional aesthetic in a swipeable format.</span></li>
                                 <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">●</span><span><strong>Motivational Reels:</strong> Perform very well for reach, especially with relatable voiceovers and captions.</span></li>
                                 <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">●</span><span><strong>Text-Based Posts:</strong> Drive high engagement due to their relatability and shareability.</span></li>
                             </ul>
-                            <h3 class="text-xl font-semibold text-gray-700 mt-6 mb-4">Inspiration Accounts</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mt-6 mb-4">Inspiration Accounts</h3>
                              <div class="flex space-x-4">
-                                <a href="#" class="text-blue-600 hover:underline">@careercontessa</a>
-                                <a href="#" class="text-blue-600 hover:underline">@workhap</a>
+                                <a href="#" class="text-blue-600 hover:underline text-sm">@careercontessa</a>
+                                <a href="#" class="text-blue-600 hover:underline text-sm">@workhap</a>
                             </div>
                         </div>
                         <div>
-                             <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Relative Engagement by Format</h3>
+                             <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4 text-center">Relative Engagement by Format</h3>
+                            <!-- Chart height is managed by the CSS media queries -->
                             <div class="chart-container h-64 md:h-80">
                                 <canvas id="engagementChart"></canvas>
                             </div>
@@ -165,20 +182,23 @@
             </div>
 
             <div id="skills" class="content-section">
-                <div class="bg-white rounded-lg shadow-lg p-6 md:p-8 animate-fade-in">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-2">Process & Skills Demonstrated</h2>
-                     <p class="text-gray-600 mb-6">This submission reflects a complete content creation process, from ideation to final design. The following skills were applied to deliver a professional, strategy-backed result.</p>
-                    <div class="grid md:grid-cols-2 gap-8">
+                <!-- Padding adjusted to p-4 sm:p-6 md:p-8 -->
+                <div class="bg-white rounded-lg shadow-lg p-4 sm:p-6 md:p-8 animate-fade-in">
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Process & Skills Demonstrated</h2>
+                     <p class="text-sm sm:text-base text-gray-600 mb-6">This submission reflects a complete content creation process, from ideation to final design. The following skills were applied to deliver a professional, strategy-backed result.</p>
+                    
+                    <!-- Grid: Stacks on mobile, goes two columns on medium screens -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Bonus Deliverable</h3>
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Bonus Deliverable</h3>
                             <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                                <p class="font-semibold text-gray-800">✅ Canva Design Layout</p>
-                                <p class="text-gray-600 mt-1">A sample design was created and attached to demonstrate end-to-end content production capability, reflecting creativity and an understanding of visual balance.</p>
+                                <p class="font-semibold text-gray-800 text-sm sm:text-base">✅ Canva Design Layout</p>
+                                <p class="text-gray-600 mt-1 text-sm">A sample design was created and attached to demonstrate end-to-end content production capability, reflecting creativity and an understanding of visual balance.</p>
                             </div>
                         </div>
                         <div>
-                            <h3 class="text-xl font-semibold text-gray-700 mb-4">Core Competencies</h3>
-                            <ul class="space-y-2 text-gray-700">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-4">Core Competencies</h3>
+                            <ul class="space-y-2 text-sm text-gray-700">
                                 <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Content Strategy & Ideation</li>
                                 <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Compelling Copywriting</li>
                                 <li class="flex items-center"><span class="text-green-500 mr-2">✔</span> Social Media Trend Analysis</li>
@@ -188,7 +208,7 @@
                         </div>
                     </div>
                      <div class="mt-8 text-center bg-blue-50 p-4 rounded-lg">
-                        <p class="font-semibold text-blue-800">✔️ All deliverables were completed as per the brief.</p>
+                        <p class="font-semibold text-blue-800 text-sm sm:text-base">✔️ All deliverables were completed as per the brief.</p>
                     </div>
                 </div>
             </div>
@@ -230,6 +250,7 @@
                         content.style.maxHeight = null;
                         icon.classList.remove('rotate-180');
                     } else {
+                        // Use scrollHeight for dynamic content height
                         content.style.maxHeight = content.scrollHeight + "px";
                         icon.classList.add('rotate-180');
                     }
